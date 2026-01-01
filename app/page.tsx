@@ -258,8 +258,8 @@ export default function Home() {
           <Input label="Location" placeholder="Where is it?" />
           
           <div className="mt-m flex flex-col gap-s">
-            <Button onClick={() => setIsAddModalOpen(false)}>Save Event</Button>
-            <Button variant="ghost" onClick={() => setIsAddModalOpen(false)}>Cancel</Button>
+            <Button className="w-full" onClick={() => setIsAddModalOpen(false)}>Save Event</Button>
+            <Button variant="ghost" className="w-full" onClick={() => setIsAddModalOpen(false)}>Cancel</Button>
           </div>
         </div>
       </Modal>
@@ -300,8 +300,8 @@ export default function Home() {
             </div>
 
             <div className="mt-l flex flex-col gap-s">
-              <Button>Edit Event</Button>
-              <Button variant="ghost" className="text-error" onClick={() => setSelectedEvent(null)}>Delete Event</Button>
+              <Button className="w-full">Edit Event</Button>
+              <Button variant="ghost" className="w-full text-error" onClick={() => setSelectedEvent(null)}>Delete Event</Button>
             </div>
           </div>
         )}

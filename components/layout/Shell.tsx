@@ -34,7 +34,7 @@ export const Shell: React.FC<ShellProps> = ({
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 pb-[100px]">
+      <main className="flex-1 pb-[100px] w-full max-w-5xl mx-auto">
         {children}
       </main>
 

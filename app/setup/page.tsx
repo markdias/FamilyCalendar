@@ -95,7 +95,7 @@ export default function FamilySetup() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-m">
-      <div className="w-full max-w-md bg-card rounded-xl shadow-xl p-xl border border-border">
+      <div className="w-full max-w-xl bg-card rounded-xl shadow-xl p-xl border border-border">
         {renderStep()}
       </div>
     </div>

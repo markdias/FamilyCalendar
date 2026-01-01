@@ -38,7 +38,7 @@ export const Modal: React.FC<ModalProps> = ({
       {/* Sheet Content */}
       <div 
         className={`
-          relative w-full max-w-xl bg-card 
+          relative w-full sm:max-w-2xl bg-card 
           rounded-t-xl sm:rounded-xl shadow-2xl
           animate-in slide-in-from-bottom duration-300
           pb-safe
