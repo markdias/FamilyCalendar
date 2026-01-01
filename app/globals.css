@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Semantic Colors - Light Mode */
+  --background: #F2F2F7;
+  --foreground: #000000;
+  --card-background: #FFFFFF;
+  --secondary-text: #8E8E93;
+  --tertiary-text: rgba(0, 0, 0, 0.3);
+  --border-color: #C6C6C8;
+
+  /* Primary Accent */
+  --accent: #FF6B6B;
+  --system-blue: #007AFF;
+  --system-gray: #8E8E93;
+  
+  /* Semantic Status */
+  --success: #34C759;
+  --warning: #FF9500;
+  --error: #FF3B30;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Semantic Colors - Dark Mode */
+    --background: #000000;
+    --foreground: #FFFFFF;
+    --card-background: #1C1C1E;
+    --secondary-text: #AEAEB2;
+    --tertiary-text: rgba(255, 255, 255, 0.3);
+    --border-color: #38383A;
+
+    /* Semantic Status - Dark Mode */
+    --success: #32D74B;
+    --warning: #FF9F0A;
+    --error: #FF453A;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-card: var(--card-background);
+  --color-accent: var(--accent);
+  --color-system-blue: var(--system-blue);
+  --color-system-gray: var(--system-gray);
+  --color-secondary-text: var(--secondary-text);
+  --color-tertiary-text: var(--tertiary-text);
+  --color-border: var(--border-color);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Member Colors */
+  --color-member-blue: #4A90E2;
+  --color-member-red: #E74C3C;
+  --color-member-green: #2ECC71;
+  --color-member-yellow: #F39C12;
+  --color-member-purple: #9B59B6;
+  --color-member-orange: #E67E22;
+  --color-member-pink: #EC407A;
+  --color-member-teal: #1ABC9C;
+
+  /* Spacing Grid (8pt) */
+  --spacing-xxxs: 2px;
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 12px;
+  --spacing-m: 16px;
+  --spacing-l: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  /* Border Radius */
+  --radius-xs: 8px;
+  --radius-s: 10px;
+  --radius-m: 12px;
+  --radius-l: 14px;
+  --radius-xl: 16px;
+
+  /* Typography Sizes */
+  --text-title1: 34px;
+  --text-title2: 28px;
+  --text-title3: 22px;
+  --text-headline: 17px;
+  --text-body: 17px;
+  --text-callout: 16px;
+  --text-subheadline: 15px;
+  --text-footnote: 13px;
+  --text-caption1: 12px;
+  --text-caption2: 11px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
