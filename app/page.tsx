@@ -11,11 +11,26 @@ import { Card } from '@/components/ui/Card';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Checkbox } from '@/components/ui/Checkbox';
+import { Calendar } from '@/components/ui/Calendar';
+import { UpgradePrompt } from '@/components/ui/UpgradePrompt';
+import { usePro } from '@/hooks/usePro';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('family');
   const [viewType, setViewType] = useState('list');
+  const [calendarDate, setCalendarDate] = useState(new Date());
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const { isPro, enablePro, disablePro } = usePro();
+
+  interface Event {
+    id?: string;
+    title: string;
+    time: string;
+    location?: string;
+    attendees?: string[];
+    notes?: string;
+  }
   const [todoItems, setTodoItems] = useState([
     { id: '1', title: 'Buy groceries', completed: false },
     { id: '2', title: 'Pick up dry cleaning', completed: true },
@@ -69,14 +84,15 @@ export default function Home() {
 
                   <div className="flex flex-col gap-xs">
                     {member.events.map(event => (
-                      <EventCard
-                        key={event.id}
-                        title={event.title}
-                        time={event.time}
-                        location={event.location}
-                        attendees={event.attendees}
-                        color={member.color}
-                      />
+                      <div key={event.id} onClick={() => setSelectedEvent(event)}>
+                        <EventCard
+                          title={event.title}
+                          time={event.time}
+                          location={event.location}
+                          attendees={event.attendees}
+                          color={member.color}
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -85,6 +101,47 @@ export default function Home() {
           </div>
         );
       
+      case 'calendar':
+        return (
+          <div className="p-m flex flex-col gap-m">
+            <div className="flex justify-between items-center px-xxs">
+              <Typography variant="title2">
+                {calendarDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+              </Typography>
+              <div className="flex gap-xs">
+                <Button variant="secondary" size="sm" onClick={() => {
+                  const newDate = new Date(calendarDate);
+                  newDate.setMonth(newDate.getMonth() - 1);
+                  setCalendarDate(newDate);
+                }}>&lt;</Button>
+                <Button variant="secondary" size="sm" onClick={() => {
+                  const newDate = new Date(calendarDate);
+                  newDate.setMonth(newDate.getMonth() + 1);
+                  setCalendarDate(newDate);
+                }}>&gt;</Button>
+              </div>
+            </div>
+            <Calendar currentDate={calendarDate} />
+            <div className="mt-m flex flex-col gap-s">
+              <Typography variant="headline">Events for Dec 24</Typography>
+              <div onClick={() => setSelectedEvent({ 
+                title: "Christmas Eve Dinner", 
+                time: "6:00 PM", 
+                location: "Grandma's House", 
+                attendees: ['All'],
+                notes: "Don't forget the gift!"
+              })}>
+                <EventCard 
+                  title="Christmas Eve Dinner" 
+                  time="6:00 PM" 
+                  location="Grandma's House" 
+                  attendees={['All']}
+                />
+              </div>
+            </div>
+          </div>
+        );
+
       case 'lists':
         return (
           <div className="flex flex-col gap-m p-m">
@@ -109,13 +166,24 @@ export default function Home() {
       case 'settings':
         return (
           <div className="flex flex-col gap-m py-m">
+            {!isPro && (
+              <div className="px-m pb-m">
+                <UpgradePrompt onUpgrade={enablePro} />
+              </div>
+            )}
+
             <section>
               <Typography variant="subheadline" className="px-m pb-xs text-secondary-text uppercase">Family</Typography>
               <div className="bg-card border-y border-border">
                 <ListRow label="Family Profile" icon="🏠" showChevron />
-                <ListRow label="Members" value="4 active" icon="👥" showChevron />
+                <ListRow label="Members" value="2 active" icon="👥" showChevron />
                 <ListRow label="Shared Calendars" value="Main Family" icon="📅" showChevron />
               </div>
+              {!isPro && (
+                <Typography variant="caption2" className="px-m pt-xs text-secondary-text">
+                  Free tier: Max 2 members. <button className="text-accent font-medium" onClick={enablePro}>Upgrade</button>
+                </Typography>
+              )}
             </section>
 
             <section>
@@ -123,7 +191,14 @@ export default function Home() {
               <div className="bg-card border-y border-border">
                 <ListRow label="Notifications" icon="🔔" showChevron />
                 <ListRow label="Theme" value="System" icon="🎨" showChevron />
-                <ListRow label="Pro Features" value="Active" icon="⭐️" className="text-accent" showChevron />
+                <ListRow 
+                  label="Pro Features" 
+                  value={isPro ? "Active" : "Inactive"} 
+                  icon="⭐️" 
+                  className={isPro ? "text-accent" : ""} 
+                  onClick={isPro ? disablePro : enablePro}
+                  showChevron 
+                />
               </div>
             </section>
 
@@ -187,6 +262,49 @@ export default function Home() {
             <Button variant="ghost" onClick={() => setIsAddModalOpen(false)}>Cancel</Button>
           </div>
         </div>
+      </Modal>
+
+      <Modal
+        isOpen={!!selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+        title="Event Details"
+      >
+        {selectedEvent && (
+          <div className="flex flex-col gap-m">
+            <div className="flex flex-col gap-xxs">
+              <Typography variant="title3">{selectedEvent.title}</Typography>
+              <Typography variant="body" className="text-secondary-text">
+                {selectedEvent.time} • Dec 24, 2024
+              </Typography>
+            </div>
+
+            <div className="flex flex-col gap-s">
+              {selectedEvent.location && (
+                <div className="flex items-center gap-m">
+                  <span className="text-xl">📍</span>
+                  <Typography variant="body">{selectedEvent.location}</Typography>
+                </div>
+              )}
+              {selectedEvent.attendees && (
+                <div className="flex items-center gap-m">
+                  <span className="text-xl">👥</span>
+                  <Typography variant="body">{selectedEvent.attendees.join(', ')}</Typography>
+                </div>
+              )}
+              {selectedEvent.notes && (
+                <div className="flex flex-col gap-xs pt-s border-t border-border">
+                  <Typography variant="caption1" className="text-secondary-text uppercase">Notes</Typography>
+                  <Typography variant="body">{selectedEvent.notes}</Typography>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-l flex flex-col gap-s">
+              <Button>Edit Event</Button>
+              <Button variant="ghost" className="text-error" onClick={() => setSelectedEvent(null)}>Delete Event</Button>
+            </div>
+          </div>
+        )}
       </Modal>
     </Shell>
   );

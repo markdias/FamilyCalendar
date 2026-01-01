@@ -47,10 +47,10 @@ export const Shell: React.FC<ShellProps> = ({
           icon={<div className="w-5 h-5 rounded-sm border-2 border-current" />}
         />
         <TabItem 
-          label="Search" 
-          active={activeTab === 'search'} 
-          onClick={() => onTabChange?.('search')}
-          icon={<div className="w-5 h-5 rounded-full border-2 border-current" />}
+          label="Calendar" 
+          active={activeTab === 'calendar'} 
+          onClick={() => onTabChange?.('calendar')}
+          icon={<div className="w-5 h-5 border-2 border-current rounded-[2px] flex items-center justify-center text-[8px] font-bold">1</div>}
         />
         <button 
           className="flex flex-col items-center justify-center -mt-8 bg-accent text-white w-12 h-12 rounded-full shadow-lg active:scale-95 transition-transform"
